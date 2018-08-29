@@ -11,6 +11,17 @@ public class SinglyLinkedList
 	}
 } 
 
+class ListNode
+{
+	int data;
+	ListNode next;
+
+	public ListNode(int datavalue)
+	{
+		this.data=datavalue;
+	}
+}
+
 class LinkedList
 {
 	ListNode head;
@@ -53,43 +64,52 @@ class LinkedList
 		
 	}
 
-	public void insert(int data,int pos)
+	public void insert(int data)
 	{
-		
-		ListNode node=new ListNode(data);
-		listLength++;
-			
-		if(pos>listLength)
+		if(head==null)
 		{
-			System.out.println("Specified Position of the node can not exit");
-			return;
-		}
-		if(head==null || pos==1)
-		{
+			ListNode node=new ListNode(data);
+			listLength++;
 			head=node;
 		}
-		else if(pos==-1 || pos==listLength)
-		{
-			node.next=null;			
-			ListNode currnode=head;
-			while(currnode.next!=null)
-			{
-				currnode=currnode.next;
-			}
-			currnode.next=node;
-		}
+
 		else
 		{
-			int position=1;
-			ListNode currnode=head;
-			while(position<pos-1)
+			System.out.println("Enter the position... Enter -1 to insert at the end ");
+			Scanner ss=new Scanner(System.in);
+			int pos=ss.nextInt();
+			if(pos>listLength+1 || (pos<1 && pos!=-1))
 			{
-				currnode=currnode.next;
-				position++;
+				System.out.println(">>>>>>>>>>>Specified Position of the node can not exit<<<<<<<<<<<<");
+				return;
 			}
-			node.next=currnode.next;
-			currnode.next=node;
-	
+
+			else if(pos==-1 || pos==listLength+1)
+			{
+				ListNode node=new ListNode(data);
+				node.next=null;			
+				ListNode currnode=head;
+				while(currnode.next!=null)
+				{
+					currnode=currnode.next;
+				}
+				currnode.next=node;
+				listLength++;
+			}
+			else
+			{
+				ListNode node=new ListNode(data);
+				int position=1;
+				ListNode currnode=head;
+				while(position<pos-1)
+				{
+					currnode=currnode.next;
+					position++;
+				}
+				node.next=currnode.next;
+				currnode.next=node;
+				listLength++;		
+			}
 		}
 	}
 
@@ -128,6 +148,40 @@ class LinkedList
 		listLength--;
 	}
 
+	public void removeMatched(int data)
+	{
+		ListNode currnode=head;
+		if(head==null)
+		{
+			System.out.println("********No node in the list***************");
+			return;
+		}
+		else if(currnode.data==data)
+		{
+			head=head.next;
+			listLength--;		
+		}
+		
+		else
+		{
+			int x=1;
+			while(currnode.next.data!=data && x<listLength )
+			{
+				currnode=currnode.next;
+				x++;
+			if(currnode.next.data==data)
+			}
+			{
+				currnode.next=currnode.next.next;
+				listLength--;	
+			}
+			else
+			{
+				System.out.println("No match found");
+			}
+		}
+	}
+
 	public void chooseOps()
 	{
 		System.out.println("Press 1 to continue");	
@@ -145,7 +199,8 @@ class LinkedList
 				System.out.println("choose the operation you want to perform...");
 				System.out.println("Press 0 to exit");
 				System.out.println("Press 1 to insert an element to the LinkedList");
-				System.out.println("Press 2 to delete the element");
+				System.out.println("Press 2 to delete the element having specified position");
+				System.out.println("Press 3 to delete node with given data");
 				
 				Scanner ss=new Scanner(System.in);
 				choice=ss.nextInt();
@@ -154,14 +209,17 @@ class LinkedList
 				{
 					case 1 : System.out.println("Enter the data ");
 						 int data=ss.nextInt();
-						 System.out.println("Enter the position..Enter 1 for beginning and Enter -1 to insert 							  at the end ");
-						 int position=ss.nextInt();
-						 insert(data,position);	
+						 insert(data);	
 						 printLinkedList();
 						 break;
 					case 2 :  System.out.println("Enter the position..Enter 1 for beginning and Enter -1 to delete 							  the last node ");
 						 int pos=ss.nextInt();
 						 remove(pos);	
+						 printLinkedList();
+						 break;
+					case 3 :  System.out.println("Enter the data you want to delete");
+						 int datatodelete=ss.nextInt();
+						 removeMatched(datatodelete);	
 						 printLinkedList();
 						 break;
 					case 0 : System.exit(0);
@@ -172,13 +230,4 @@ class LinkedList
 
 }
 
-class ListNode
-{
-	int data;
-	ListNode next;
 
-	public ListNode(int datavalue)
-	{
-		this.data=datavalue;
-	}
-}
