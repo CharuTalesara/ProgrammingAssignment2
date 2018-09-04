@@ -101,14 +101,25 @@ class LinkedList
 				ListNode node=new ListNode(data);
 				int position=1;
 				ListNode currnode=head;
-				while(position<pos-1)
+
+				
+				if(pos==1)
 				{
-					currnode=currnode.next;
-					position++;
-				}
-				node.next=currnode.next;
-				currnode.next=node;
-				listLength++;		
+					node.next=head;
+					head=node;
+					listLength++;	
+				}	
+				else
+				{
+					while(position<pos-1)
+					{
+						currnode=currnode.next;
+						position++;
+					}
+					node.next=currnode.next;
+					currnode.next=node;
+					listLength++;				
+				}						
 			}
 		}
 	}
@@ -148,6 +159,140 @@ class LinkedList
 		listLength--;
 	}
 
+
+	public void sortEvenOdd()
+	{
+		if(head==null)
+		{
+			System.out.println("********No node in the list to sort***************");
+			return;
+		}
+		else if(listLength==1)
+		{
+			return;
+		}
+		else
+		{			
+			for(int lllength=listLength;lllength>1;lllength--)
+			{
+				ListNode currnode=head;
+				while(currnode.next!=null)
+				{
+					if(currnode.data%2!=0)
+					{
+						int temp=currnode.data;
+						currnode.data=currnode.next.data;
+						currnode.next.data=temp;
+					}
+					currnode=currnode.next;
+				}
+			}
+		}
+	}
+
+	public void sortLL()
+	{
+		if(head==null)
+		{
+			System.out.println("********No node in the list to sort***************");
+			return;
+		}
+		else if(listLength==1)
+		{
+			return;
+		}
+		else
+		{			
+			for(int lllength=listLength;lllength>1;lllength--)
+			{
+				ListNode currnode=head;
+				while(currnode.next!=null)
+				{
+					if(currnode.data>currnode.next.data)
+					{
+						int temp=currnode.data;
+						currnode.data=currnode.next.data;
+						currnode.next.data=temp;
+					}
+					currnode=currnode.next;
+				}
+			}
+		}
+	}
+
+	public int getPos(int nodData)
+	{
+		ListNode currnode=head;
+		int pos=1;
+		while(currnode.next!=null)
+		{
+			if(currnode.data==nodData)
+			{
+				return pos;
+			}
+			pos++;
+			currnode=currnode.next;
+		}
+		return pos;
+		
+	}	
+
+	public int getNode(int endpos)
+	{
+		ListNode currnode=head;
+		int pos=listLength+1-endpos;
+		int nodedata=-1;
+ 		if(endpos>listLength || endpos<1)
+		{
+			System.out.println("******WRONG POSITION ENTERED**********");
+		}
+		else
+		{
+			int count=1;
+			while(count<pos)
+			{
+				currnode=currnode.next;
+				count++;
+			}
+			nodedata=currnode.data;
+		}
+		return	nodedata;
+	}		
+
+	public void removePos(int position)
+	{
+		ListNode currnode=head;
+		if(head==null)
+		{
+			System.out.println("********No node in the list***************");
+			return;
+		}
+
+		if(position>listLength || position<1)
+		{
+			System.out.println("*************Specified position does not exist********************");
+			return;
+		}		
+				
+
+		
+		if(position>1)
+		{
+			int pos=1;
+			while(pos<position-1)
+			{
+				currnode=currnode.next;
+				pos++;
+			}
+			currnode.next=currnode.next.next;
+		}
+		else
+		{
+			head=head.next;
+		}
+	}
+
+
 	public void removeMatched(int data)
 	{
 		ListNode currnode=head;
@@ -169,8 +314,8 @@ class LinkedList
 			{
 				currnode=currnode.next;
 				x++;
-			if(currnode.next.data==data)
 			}
+			if(currnode.next.data==data)
 			{
 				currnode.next=currnode.next.next;
 				listLength--;	
@@ -201,6 +346,12 @@ class LinkedList
 				System.out.println("Press 1 to insert an element to the LinkedList");
 				System.out.println("Press 2 to delete the element having specified position");
 				System.out.println("Press 3 to delete node with given data");
+				System.out.println("Press 4 to delete data with a specified position");
+				System.out.println("Press 5 to sort the linkedlist");
+				System.out.println("Press 6 to get position of a given element");
+				System.out.println("Press 7 to print linklist");
+				System.out.println("Press 8 to get nth element from the end");
+				System.out.println("Press 9 to sort the linklist as even odd");
 				
 				Scanner ss=new Scanner(System.in);
 				choice=ss.nextInt();
@@ -220,6 +371,29 @@ class LinkedList
 					case 3 :  System.out.println("Enter the data you want to delete");
 						 int datatodelete=ss.nextInt();
 						 removeMatched(datatodelete);	
+						 printLinkedList();
+						 break;
+					case 4 : System.out.println("Enter the position of the node you want to delete");
+						 int nodetodelete=ss.nextInt();
+						 removePos(nodetodelete);	
+						 printLinkedList();
+						 break;
+					case 5 : sortLL();	
+						 printLinkedList();
+						 break;
+					case 6 : System.out.println("Enter the node data whose position u wanna get");
+						 int nodData=ss.nextInt();
+						 int pos1=getPos(nodData);	
+						 System.out.println("***********Position of given node = "+pos1);
+						 break;
+					case 7 : printLinkedList();
+						 break;
+					case 8 : System.out.println("Enter the nth position from end that you want to search");
+						 int n=ss.nextInt();
+						 int n1=getNode(n);	
+						 System.out.println("***********Element data at given position = "+n1);
+						 break;
+					case 9 : sortEvenOdd();	
 						 printLinkedList();
 						 break;
 					case 0 : System.exit(0);
