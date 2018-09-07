@@ -138,7 +138,7 @@ class LinkedList
 		}
 		else if(position ==-1)
 		{
-			while(currnode.next.next!=null)
+			while( currnode.next.next!=null)
 			{
 				System.out.println(currnode.data);
 				currnode=currnode.next;
@@ -327,6 +327,86 @@ class LinkedList
 		}
 	}
 
+	public void reverse()
+	{
+		ListNode currnode=head;
+		if(head==null)
+		{
+			System.out.println("********No node in the list***************");
+			return;
+		}
+		else if(listLength==1)
+		{
+			return;
+		}
+		else if(listLength==2)
+		{
+			ListNode temp=currnode;
+			currnode.next.next=head;
+			head=currnode.next;
+			currnode.next=null;
+		}
+		else
+		{
+			ListNode prev=null;
+			ListNode next=null;
+			while(currnode!=null)
+			{
+				next=currnode.next;
+				currnode.next=prev;
+				prev=currnode;
+				currnode=next;
+			}
+			head=prev;	
+		}
+		
+	}
+		
+	
+	public void rotate(int by)
+	{
+		ListNode firstnode=head;
+		ListNode currnode=head;
+		if(head==null)
+		{
+			System.out.println("********No node in the list***************");
+			return;
+		}
+		else if(by>listLength || by<1)
+		{
+			System.out.println("Wrong value of entered");
+		}
+		else if(listLength==1)
+		{
+			return;
+		}
+		else
+		{
+			for(int i=1;i<=by;i++)
+			{
+				firstnode=firstnode.next;
+			}
+			System.out.println("First Node : "+firstnode.data);
+			head=firstnode;
+			ListNode lastnode=firstnode;
+			while(lastnode.next!=null)
+			{
+				lastnode=lastnode.next;
+			}
+			System.out.println("Last Node "+lastnode.data);
+			int count=1;
+			while(currnode!=firstnode)
+			{
+				ListNode node=new ListNode(currnode.data);
+				System.out.println(node.data);
+				lastnode.next=node;
+				lastnode=node;
+				currnode=currnode.next;				
+			}
+		}	
+	} 
+
+
 	public void chooseOps()
 	{
 		System.out.println("Press 1 to continue");	
@@ -352,6 +432,8 @@ class LinkedList
 				System.out.println("Press 7 to print linklist");
 				System.out.println("Press 8 to get nth element from the end");
 				System.out.println("Press 9 to sort the linklist as even odd");
+				System.out.println("Press 10 to reverse the existing linklist");
+				System.out.println("Press 11 to rotate the linklist clockwise");
 				
 				Scanner ss=new Scanner(System.in);
 				choice=ss.nextInt();
@@ -394,6 +476,16 @@ class LinkedList
 						 System.out.println("***********Element data at given position = "+n1);
 						 break;
 					case 9 : sortEvenOdd();	
+						 printLinkedList();
+						 break;
+					case 10 :printLinkedList();
+						 reverse();	
+						 printLinkedList();
+						 break;
+					case 11 :printLinkedList();
+						 System.out.println("Enter the number by which you wanna to rotate");
+						 int by=ss.nextInt();
+						 rotate(by);	
 						 printLinkedList();
 						 break;
 					case 0 : System.exit(0);
